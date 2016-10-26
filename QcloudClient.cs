@@ -27,7 +27,8 @@ namespace QcloudSharp
             SecretId = secretId;
             SecretKey = secretKey;
         }
-        private int CompareKeyValuePair(KeyValuePair<string, string> a, KeyValuePair<string, string> b)
+
+        private static int CompareKeyValuePair(KeyValuePair<string, string> a, KeyValuePair<string, string> b)
         {
             return string.Compare(a.Key, b.Key, StringComparison.Ordinal);
         }

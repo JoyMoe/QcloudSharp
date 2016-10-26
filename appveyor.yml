@@ -12,16 +12,18 @@ nuget:
 build:
   publish_nuget: true
   verbosity: detailed
+artifacts:
+- path: C:\projects\qcloudsharp\bin\Release\QcloudSharp.dll
+  name: QcloudSharp
 deploy:
 - provider: NuGet
   api_key:
     secure: 7sixps51LfcM9cv9+MuwotnND91/5pdnywrJpZ588wrEmPbxvICFUwAOaUqcnYkM
-  artifact: /.*\.nupkg/
 - provider: GitHub
   description: AppVeyor CI deployment
   auth_token:
     secure: 49h1/SXggw6sDLDix121vnZO1XeUqNJkKUDEwx+QdHQJzEJwO2bgRqOs6HPNDExh
-  artifact: /.*\.dll/
+  artifact: QcloudSharp
   draft: false
   prerelease: true
   force_update: true

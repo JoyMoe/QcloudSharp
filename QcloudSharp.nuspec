@@ -16,7 +16,5 @@
             <dependency id="System.Net.Http" version="4.1.0" />
         </dependencies>
     </metadata>
-    <files>
-        <file src="bin\Release\QcloudSharp.dll" target="lib\net45" />
-    </files>
+    <files />
 </package>

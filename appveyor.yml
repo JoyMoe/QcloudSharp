@@ -13,7 +13,7 @@ build:
   publish_nuget: true
   verbosity: detailed
 artifacts:
-- path: C:\projects\qcloudsharp\bin\Release\QcloudSharp.dll
+- path: bin\Release\QcloudSharp.dll
   name: QcloudSharp
 deploy:
 - provider: NuGet

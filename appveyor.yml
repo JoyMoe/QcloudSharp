@@ -26,8 +26,8 @@ deploy:
   auth_token:
     secure: 49h1/SXggw6sDLDix121vnZO1XeUqNJkKUDEwx+QdHQJzEJwO2bgRqOs6HPNDExh
   artifact: QcloudSharp
-  draft: true
-  prerelease: true
+  draft: false
+  prerelease: false
   force_update: true
   on:
     appveyor_repo_tag: true

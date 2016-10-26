@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>QcloudSharp</id>
+        <version>1.0.0</version>
+        <authors>7IN0SAN9</authors>
+        <licenseUrl>https://github.com/labs7in0/QcloudSharp/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/labs7in0/QcloudSharp</projectUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <description>Qcloud.com API wrapper for .Net</description>
+        <copyright>2016 7IN0SAN9</copyright>
+        <language>en-US</language>
+        <dependencies>
+            <dependency id="System.Net.Http" version="4.1.0" />
+        </dependencies>
+    </metadata>
+    <files />
+</package>

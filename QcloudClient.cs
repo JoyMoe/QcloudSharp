@@ -61,6 +61,12 @@ namespace QcloudSharp
                 }
             }
         }
+        private long ToUnixTimeSeconds(DateTimeOffset dateTimeOffset)
+        {
+            var unixStart = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            var unixTimeStampInTicks = (dateTimeOffset.ToUniversalTime() - unixStart).Ticks;
+            return unixTimeStampInTicks / TimeSpan.TicksPerSecond;
+        }
 
         public void AddParameter(KeyValuePair<string, string> parameter)
         {
@@ -95,7 +101,7 @@ namespace QcloudSharp
             {
                 new KeyValuePair<string, string>("Action", action),
                 new KeyValuePair<string, string>("Region", Enum.ToRegion(Region)),
-                new KeyValuePair<string, string>("Timestamp", DateTimeOffset.Now.ToUnixTimeSeconds().ToString()),
+                new KeyValuePair<string, string>("Timestamp", ToUnixTimeSeconds(DateTimeOffset.Now).ToString()),
                 new KeyValuePair<string, string>("Nonce", new Random().Next().ToString()),
                 new KeyValuePair<string, string>("SecretId", SecretId)
             };

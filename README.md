@@ -1,6 +1,13 @@
-QcloudSharp: Qcloud.com API wrapper for .Net
+QcloudSharp: Unoffical Qcloud.com API wrapper for .Net
 ===
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/labs7in0/qcloudsharp)](https://ci.appveyor.com/project/7IN0SAN9/qcloudsharp)
+[![NuGet version](https://badge.fury.io/nu/QcloudSharp.svg)](https://www.nuget.org/packages/QcloudSharp)
+
+### Installation
+To install QcloudSharp, run the following command in the Package Manager Console
+```
+PM> Install-Package QcloudSharp
+```
 
 ### Example
 ```csharp

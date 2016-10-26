@@ -1,4 +1,5 @@
 version: 0.9.{build}
+skip_tags: true
 configuration: Release
 assembly_info:
   patch: true
@@ -24,6 +25,6 @@ deploy:
   auth_token:
     secure: 49h1/SXggw6sDLDix121vnZO1XeUqNJkKUDEwx+QdHQJzEJwO2bgRqOs6HPNDExh
   artifact: QcloudSharp
-  draft: false
+  draft: true
   prerelease: true
   force_update: true

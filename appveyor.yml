@@ -1,5 +1,4 @@
 version: 0.9.{build}
-skip_tags: true
 configuration: Release
 assembly_info:
   patch: true
@@ -20,6 +19,8 @@ deploy:
 - provider: NuGet
   api_key:
     secure: 7sixps51LfcM9cv9+MuwotnND91/5pdnywrJpZ588wrEmPbxvICFUwAOaUqcnYkM
+  on:
+    appveyor_repo_tag: true
 - provider: GitHub
   description: AppVeyor CI deployment
   auth_token:
@@ -28,3 +29,5 @@ deploy:
   draft: true
   prerelease: true
   force_update: true
+  on:
+    appveyor_repo_tag: true

@@ -13,10 +13,11 @@ namespace QcloudSharp
     {
         private string _uri = "/v2/index.php";
         private List<KeyValuePair<string, string>> _patameters;
-        public string SecretId;
-        public string SecretKey;
-        public Enum.Region Region;
-        public Enum.Endpoint Endpoint;
+
+        public string SecretId { get; set; }
+        public string SecretKey { get; set; }
+        public Enum.Region Region { get; set; }
+        public Enum.Endpoint Endpoint { get; set; }
 
         public QcloudClient()
         {

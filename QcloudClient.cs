@@ -46,7 +46,7 @@ namespace QcloudSharp
                 }
             }
         }
-        private HttpResponseMessage Send(string endpoint, List<KeyValuePair<string, string>> data)
+        private string Send(string endpoint, List<KeyValuePair<string, string>> data)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
             data.Add(new KeyValuePair<string, string>("Signature", GetSignature(endpoint, data)));
@@ -55,10 +55,12 @@ namespace QcloudSharp
             {
                 using (var client = new HttpClient())
                 {
-                    return client.GetAsync($"https://{endpoint}{_uri}?{content.ReadAsStringAsync().Result}").Result;
+                    var message = client.GetAsync($"https://{endpoint}{_uri}?{content.ReadAsStringAsync().Result}").Result;
+                    return message.Content.ReadAsStringAsync().Result;
                 }
             }
         }
+
         public void AddParameter(KeyValuePair<string, string> parameter)
         {
             if (_patameters == null) _patameters = new List<KeyValuePair<string, string>>();
@@ -74,18 +76,19 @@ namespace QcloudSharp
         {
             _patameters = new List<KeyValuePair<string, string>>();
         }
-        public HttpResponseMessage Submit(Enum.Endpoint endpoint, Enum.Region region, string action)
+
+        public string Submit(Enum.Endpoint endpoint, Enum.Region region, string action)
         {
             Endpoint = endpoint;
             Region = region;
             return Submit(action);
         }
-        public HttpResponseMessage Submit(Enum.Endpoint endpoint, string action)
+        public string Submit(Enum.Endpoint endpoint, string action)
         {
             Endpoint = endpoint;
             return Submit(action);
         }
-        public HttpResponseMessage Submit(string action)
+        public string Submit(string action)
         {
             var patameters = new List<KeyValuePair<string, string>>
             {
@@ -100,6 +103,7 @@ namespace QcloudSharp
 
             return Send(Enum.ToEndpoint(Endpoint), patameters);
         }
+
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
         {
             if (args.Length < 2)

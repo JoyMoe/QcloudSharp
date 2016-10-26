@@ -7,14 +7,11 @@
         <licenseUrl>https://github.com/labs7in0/QcloudSharp/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/labs7in0/QcloudSharp</projectUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
-        <description>This is an unofficial API wrapper of Qcloud.com for .Net</description>
+        <description>Unofficial API wrapper of Qcloud.com for .Net</description>
         <summary>Qcloud.com API wrapper for .Net</summary>
         <copyright>Copyright (c) 2016 labs7in0</copyright>
         <language>en-US</language>
         <tags>qcloud</tags>
-        <dependencies>
-            <dependency id="System.Net.Http" version="4.1.0" />
-        </dependencies>
     </metadata>
     <files />
 </package>

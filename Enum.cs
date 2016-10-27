@@ -17,11 +17,51 @@ namespace QcloudSharp
     {
         public enum Endpoint
         {
+            [ContentText("account.api.qcloud.com")]
+            Account,
+            [ContentText("bill.api.qcloud.com")]
+            Bill,
+            [ContentText("cbs.api.qcloud.com")]
+            Cbs,
+            [ContentText("cdb.api.qcloud.com")]
+            Cdb,
+            [ContentText("cdn.api.qcloud.com")]
+            Cdn,
+            [ContentText("cmem.api.qcloud.com")]
+            Cmem,
+            [ContentText("cvm.api.qcloud.com")]
+            Cvm,
+            [ContentText("eip.api.qcloud.com")]
+            Eip,
+            [ContentText("image.api.qcloud.com")]
+            Image,
+            [ContentText("lb.api.qcloud.com")]
+            Lb,
+            [ContentText("live.api.qcloud.com")]
+            Live,
+            [ContentText("market.api.qcloud.com")]
+            Market,
+            [ContentText("monitor.api.qcloud.com")]
+            Monitor,
+            [ContentText("scaling.api.qcloud.com")]
+            Scaling,
+            [ContentText("csec.api.qcloud.com")]
+            Sec,
+            [ContentText("snapshot.api.qcloud.com")]
+            Snapshot,
+            [ContentText("tdsql.api.qcloud.com")]
+            Tdsql,
             [ContentText("trade.api.qcloud.com")]
             Trade,
-            [ContentText("cvm.api.qcloud.com")]
-            Cvm
-        };
+            [ContentText("vod.api.qcloud.com")]
+            Vod,
+            [ContentText("vpc.api.qcloud.com")]
+            Vpc,
+            [ContentText("wenzhi.api.qcloud.com")]
+            Wenzhi,
+            [ContentText("yunsou.api.qcloud.com")]
+            Yunsou
+        }
         public enum Region // Defined as IATA code
         {
             [ContentText("bj")]
@@ -34,7 +74,7 @@ namespace QcloudSharp
             HKG,
             [ContentText("ca")]
             YTO
-        };
+        }
 
         public static string ToEndpoint(Endpoint en)
         {

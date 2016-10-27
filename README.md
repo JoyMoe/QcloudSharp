@@ -33,8 +33,28 @@ public enum Endpoint // Abbreviation for endpoint domain
 ```
 
 Members
-* Trade
+* Account
+* Bill
+* Cbs
+* Cdb
+* Cdn
+* Cmem
 * Cvm
+* Eip
+* Image
+* Lb
+* Live
+* Market
+* Monitor
+* Scaling
+* Sec
+* Snapshot
+* Tdsql
+* Trade
+* Vod
+* Vpc
+* Wenzhi
+* Yunsou
 
 ```
 public enum Region // IATA code for Region city

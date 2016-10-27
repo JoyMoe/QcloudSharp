@@ -126,7 +126,7 @@ namespace QcloudSharp
                 // ReSharper disable once NotResolvedInText
                 throw new ArgumentNullException("Region");
             
-            Region = (Enum.Region)args[0];
+            Region = (Enum.Region)args[1];
 
             if (args.Length >= 3)
             {

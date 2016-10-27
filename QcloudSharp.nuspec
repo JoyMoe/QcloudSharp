@@ -3,13 +3,13 @@
     <metadata>
         <id>QcloudSharp</id>
         <version>$version$</version>
-        <authors>7IN0SAN9</authors>
-        <licenseUrl>https://github.com/labs7in0/QcloudSharp/blob/master/LICENSE</licenseUrl>
-        <projectUrl>https://github.com/labs7in0/QcloudSharp</projectUrl>
+        <authors>kinosang</authors>
+        <licenseUrl>https://github.com/kinosang/QcloudSharp/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/kinosang/QcloudSharp</projectUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <description>Unofficial API wrapper of Qcloud.com for .Net</description>
         <summary>Qcloud.com API wrapper for .Net</summary>
-        <copyright>Copyright (c) 2016 labs7in0</copyright>
+        <copyright>Copyright (c) 2016 kinosang</copyright>
         <language>en-US</language>
         <tags>qcloud</tags>
     </metadata>

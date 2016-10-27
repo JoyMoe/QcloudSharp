@@ -1,6 +1,6 @@
 QcloudSharp: Unoffical Qcloud.com API wrapper for .Net
 ===
-[![Build status](https://ci.appveyor.com/api/projects/status/b96llok223xfhmx5?svg=true)](https://ci.appveyor.com/project/7IN0SAN9/qcloudsharp)
+[![Build status](https://ci.appveyor.com/api/projects/status/my3yu20j7635osdj?svg=true)](https://ci.appveyor.com/project/7IN0SAN9/qcloudsharp)
 [![NuGet version](https://badge.fury.io/nu/QcloudSharp.svg)](https://www.nuget.org/packages/QcloudSharp)
 
 ### Installation
@@ -24,7 +24,7 @@ var resultString = client.DescribeUserInfo(Enum.Endpoint.Trade, Enum.Endpoint.Re
 dynamic result = JsonConvert.DeserializeObject<ApiResult>(resultString);
 ```
 
-Or you can try [QcloudCvmHelper](https://github.com/labs7in0/QcloudCvmHelper)
+Or you can try [QcloudCvmHelper](https://github.com/kinosang/QcloudCvmHelper)
 
 ### Enums
 

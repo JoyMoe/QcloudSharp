@@ -11,7 +11,7 @@ namespace QcloudSharp
 {
     public class QcloudClient : DynamicObject
     {
-        private string _uri = "/v2/index.php";
+        private const string Uri = "/v2/index.php";
         private List<KeyValuePair<string, string>> _patameters;
 
         public string SecretId { get; set; }
@@ -39,7 +39,7 @@ namespace QcloudSharp
             using (var content = new FormUrlEncodedContent(data))
             {
                 var queryString = WebUtility.UrlDecode(content.ReadAsStringAsync().Result);
-                var plainString = $"GET{endpoint}{_uri}?{queryString}";
+                var plainString = $"GET{endpoint}{Uri}?{queryString}";
 
                 using (HMACSHA1 hmac = new HMACSHA1(Encoding.UTF8.GetBytes(SecretKey)))
                 {
@@ -56,7 +56,7 @@ namespace QcloudSharp
             {
                 using (var client = new HttpClient())
                 {
-                    var message = client.GetAsync($"https://{endpoint}{_uri}?{content.ReadAsStringAsync().Result}").Result;
+                    var message = client.GetAsync($"https://{endpoint}{Uri}?{content.ReadAsStringAsync().Result}").Result;
                     return message.Content.ReadAsStringAsync().Result;
                 }
             }

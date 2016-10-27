@@ -5,7 +5,7 @@ QcloudSharp: Unoffical Qcloud.com API wrapper for .Net
 
 ### Installation
 To install QcloudSharp, run the following command in the Package Manager Console
-```
+```powershell
 PM> Install-Package QcloudSharp
 ```
 
@@ -24,11 +24,13 @@ var resultString = client.DescribeUserInfo(Enum.Endpoint.Trade, Enum.Endpoint.Re
 dynamic result = JsonConvert.DeserializeObject<ApiResult>(resultString);
 ```
 
+Or you can try [QcloudCvmHelper](https://github.com/labs7in0/QcloudCvmHelper)
+
 ### Enums
 
 All Enums are provided in class `QcloudSharp.Enum`.
 
-```
+```csharp
 public enum Endpoint // Abbreviation for endpoint domain
 ```
 
@@ -56,7 +58,7 @@ Members
 * Wenzhi
 * Yunsou
 
-```
+```csharp
 public enum Region // IATA code for Region city
 ```
 
@@ -71,7 +73,7 @@ Members
 
 #### QcloudClient
 
-```
+```csharp
 public class QcloudClient : DynamicObject
 ```
 
@@ -100,7 +102,7 @@ Dynamic Methods
 
 #### ApiResult
 
-```
+```csharp
 public class ApiResult : DynamicObject
 ```
 
@@ -113,3 +115,24 @@ Properties
 
 Dynamic Properties
 * object Any { Get; Set; }
+
+Example
+```csharp
+using QcloudSharp;
+using Newtonsoft.Json;
+
+var resultString = "{\"code\":0,\"message\": \"\",\"userInfo\":{\"name\":\"compName\",\"isOwner\":1,\"mailStatus\":1,\"mail\":\"112233@qq.com\",\"phone\":\"13811112222\"}}";
+dynamic result = JsonConvert.DeserializeObject<ApiResult>(resultString);
+
+try
+{
+    Console.WriteLine(result.Code);
+	Console.WriteLine(result.userInfo.name);
+	Console.WriteLine(result.null); // Will throw an ArgumentNullException
+}
+catch(Exception ex)
+{
+	Console.WriteLine(ex.message);
+}
+
+```

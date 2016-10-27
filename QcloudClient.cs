@@ -41,7 +41,7 @@ namespace QcloudSharp
                 var queryString = WebUtility.UrlDecode(content.ReadAsStringAsync().Result);
                 var plainString = $"GET{endpoint}{Uri}?{queryString}";
 
-                using (HMACSHA1 hmac = new HMACSHA1(Encoding.UTF8.GetBytes(SecretKey)))
+                using (var hmac = new HMACSHA1(Encoding.UTF8.GetBytes(SecretKey)))
                 {
                     return Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(plainString)));
                 }

@@ -12,6 +12,7 @@ PM> Install-Package QcloudSharp
 ### Example
 ```csharp
 using QcloudSharp;
+using Newtonsoft.Json;
 using Enum = QcloudSharp.Enum;
 
 dynamic client = new QcloudClient
@@ -21,10 +22,23 @@ dynamic client = new QcloudClient
 };
 
 var resultString = client.DescribeUserInfo(Enum.Endpoint.Trade, Enum.Endpoint.Region.CAN);
+// e.g. {"code":0,"message": "","userInfo":{"name":"compName","isOwner":1,"mailStatus":1,"mail":"112233@qq.com","phone":"13811112222"}}
+
 dynamic result = JsonConvert.DeserializeObject<ApiResult>(resultString);
+
+try
+{
+    Console.WriteLine(result.Code);
+    Console.WriteLine(result.userInfo.name);
+    Console.WriteLine(result.notExist); // Will throw an ArgumentNullException
+}
+catch(Exception ex)
+{
+    Console.WriteLine(ex.message);
+}
 ```
 
-Or you can try [QcloudCvmHelper](https://github.com/kinosang/QcloudCvmHelper)
+Or you can have a look at [QcloudCvmHelper](https://github.com/kinosang/QcloudCvmHelper)
 
 ### Enums
 
@@ -98,7 +112,7 @@ Methods
 Dynamic Methods
 * `{Action}(Enum.Endpoint, Enum.Region)`
 * `{Action}(Enum.Endpoint, Enum.Region, IEnumerable<KeyValuePair<string, string>>)`
-* `{Action}(Enum.Endpoint endpoint, Enum.Region region,KeyValuePair<string, string>, ...)`
+* `{Action}(Enum.Endpoint endpoint, Enum.Region region, KeyValuePair<string, string>, ...)`
 
 #### ApiResult
 
@@ -116,23 +130,12 @@ Properties
 Dynamic Properties
 * object Any { Get; Set; }
 
-Example
-```csharp
-using QcloudSharp;
-using Newtonsoft.Json;
+## Donate us
 
-var resultString = "{\"code\":0,\"message\": \"\",\"userInfo\":{\"name\":\"compName\",\"isOwner\":1,\"mailStatus\":1,\"mail\":\"112233@qq.com\",\"phone\":\"13811112222\"}}";
-dynamic result = JsonConvert.DeserializeObject<ApiResult>(resultString);
+[Donate us](https://7in0.me/#donate)
 
-try
-{
-    Console.WriteLine(result.Code);
-	Console.WriteLine(result.userInfo.name);
-	Console.WriteLine(result.null); // Will throw an ArgumentNullException
-}
-catch(Exception ex)
-{
-	Console.WriteLine(ex.message);
-}
+## License
 
-```
+The MIT License
+
+More info see [LICENSE](LICENSE)

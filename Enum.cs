@@ -29,6 +29,8 @@ namespace QcloudSharp
             Cdn,
             [ContentText("cmem.api.qcloud.com")]
             Cmem,
+            [ContentText("csec.api.qcloud.com")]
+            Csec,
             [ContentText("cvm.api.qcloud.com")]
             Cvm,
             [ContentText("dayu.api.qcloud.com")]
@@ -49,8 +51,6 @@ namespace QcloudSharp
             Redis,
             [ContentText("scaling.api.qcloud.com")]
             Scaling,
-            [ContentText("csec.api.qcloud.com")]
-            Sec,
             [ContentText("snapshot.api.qcloud.com")]
             Snapshot,
             [ContentText("sqlserver.api.qcloud.com")]

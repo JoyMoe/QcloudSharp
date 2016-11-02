@@ -86,21 +86,10 @@ namespace QcloudSharp
 
         public string Submit(Enum.Endpoint endpoint, Enum.Region region, string action)
         {
-            Endpoint = endpoint;
-            Region = region;
-            return Submit(action);
-        }
-        public string Submit(Enum.Endpoint endpoint, string action)
-        {
-            Endpoint = endpoint;
-            return Submit(action);
-        }
-        public string Submit(string action)
-        {
             var patameters = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("Action", action),
-                new KeyValuePair<string, string>("Region", Enum.ToRegion(Region)),
+                new KeyValuePair<string, string>("Region", Enum.ToRegion(region)),
                 new KeyValuePair<string, string>("Timestamp", ToUnixTimeSeconds(DateTimeOffset.Now).ToString()),
                 new KeyValuePair<string, string>("Nonce", new Random().Next().ToString()),
                 new KeyValuePair<string, string>("SecretId", SecretId)
@@ -108,7 +97,15 @@ namespace QcloudSharp
 
             if (_patameters != null) patameters.AddRange(_patameters);
 
-            return Send(Enum.ToEndpoint(Endpoint), patameters);
+            return Send(Enum.ToEndpoint(endpoint), patameters);
+        }
+        public string Submit(Enum.Endpoint endpoint, string action)
+        {
+            return Submit(endpoint, Region, action);
+        }
+        public string Submit(string action)
+        {
+            return Submit(Endpoint, Region, action);
         }
 
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
@@ -150,7 +147,7 @@ namespace QcloudSharp
                 
             }
 
-            result = Submit(binder.Name);
+            result = Submit(Endpoint, Region, binder.Name);
 
             return true;
         }

@@ -31,6 +31,8 @@ namespace QcloudSharp
             Cmem,
             [ContentText("cvm.api.qcloud.com")]
             Cvm,
+            [ContentText("dayu.api.qcloud.com")]
+            Dayu,
             [ContentText("eip.api.qcloud.com")]
             Eip,
             [ContentText("image.api.qcloud.com")]
@@ -43,12 +45,16 @@ namespace QcloudSharp
             Market,
             [ContentText("monitor.api.qcloud.com")]
             Monitor,
+            [ContentText("redis.api.qcloud.com")]
+            Redis,
             [ContentText("scaling.api.qcloud.com")]
             Scaling,
             [ContentText("csec.api.qcloud.com")]
             Sec,
             [ContentText("snapshot.api.qcloud.com")]
             Snapshot,
+            [ContentText("sqlserver.api.qcloud.com")]
+            Sqlserver,
             [ContentText("tdsql.api.qcloud.com")]
             Tdsql,
             [ContentText("trade.api.qcloud.com")]

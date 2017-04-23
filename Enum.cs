@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace QcloudSharp
 {
-    [Obsolete("QcloudSharp.Enum is deprecated, please use QcloudSharp.Enums.",true)]
+    [Obsolete("QcloudSharp.Enum is deprecated, please use QcloudSharp.Enums.")]
     public static class Enum : Enums
     {
         public static string ToEndpoint(Endpoint en)

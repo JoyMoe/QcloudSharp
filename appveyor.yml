@@ -21,7 +21,6 @@ deploy:
     secure: 7sixps51LfcM9cv9+MuwotnND91/5pdnywrJpZ588wrEmPbxvICFUwAOaUqcnYkM
   on:
     appveyor_repo_tag: true
-    appveyor_repo_tag_name: /^[0-9]+.[0-9+].[0-9]+$/
 - provider: GitHub
   description: AppVeyor CI deployment
   auth_token:

@@ -36,7 +36,7 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enum.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="ApiResult.cs" />
     <Compile Include="QcloudClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

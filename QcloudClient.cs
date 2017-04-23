@@ -16,8 +16,8 @@ namespace QcloudSharp
 
         public string SecretId { get; set; }
         public string SecretKey { get; set; }
-        public Enum.Region Region { get; set; }
-        public Enum.Endpoint Endpoint { get; set; }
+        public Enums.Region Region { get; set; }
+        public Enums.Endpoint Endpoint { get; set; }
 
         public QcloudClient()
         {
@@ -84,12 +84,12 @@ namespace QcloudSharp
             _patameters = new List<KeyValuePair<string, string>>();
         }
 
-        public string Submit(Enum.Endpoint endpoint, Enum.Region region, string action)
+        public string Submit(Enums.Endpoint endpoint, Enums.Region region, string action)
         {
             var patameters = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("Action", action),
-                new KeyValuePair<string, string>("Region", Enum.ToRegion(region)),
+                new KeyValuePair<string, string>("Region", region.ToDescription()),
                 new KeyValuePair<string, string>("Timestamp", ToUnixTimeSeconds(DateTimeOffset.Now).ToString()),
                 new KeyValuePair<string, string>("Nonce", new Random().Next().ToString()),
                 new KeyValuePair<string, string>("SecretId", SecretId)
@@ -97,9 +97,11 @@ namespace QcloudSharp
 
             if (_patameters != null) patameters.AddRange(_patameters);
 
-            return Send(Enum.ToEndpoint(endpoint), patameters);
+            string endpointUrl = String.Format(endpoint.ToDescription(), region.ToDescription());
+
+            return Send(endpointUrl, patameters);
         }
-        public string Submit(Enum.Endpoint endpoint, string action)
+        public string Submit(Enums.Endpoint endpoint, string action)
         {
             return Submit(endpoint, Region, action);
         }
@@ -113,17 +115,15 @@ namespace QcloudSharp
             if (args.Length < 2)
                 throw new ArgumentException("Endpoint and Region must be specified.");
 
-            if (!(args[0] is Enum.Endpoint))
-                // ReSharper disable once NotResolvedInText
+            if (!(args[0] is Enums.Endpoint))
                 throw new ArgumentNullException("Endpoint");
 
-            Endpoint = (Enum.Endpoint)args[0];
+            Endpoint = (Enums.Endpoint)args[0];
 
-            if (!(args[1] is Enum.Region))
-                // ReSharper disable once NotResolvedInText
+            if (!(args[1] is Enums.Region))
                 throw new ArgumentNullException("Region");
             
-            Region = (Enum.Region)args[1];
+            Region = (Enums.Region)args[1];
 
             if (args.Length >= 3)
             {

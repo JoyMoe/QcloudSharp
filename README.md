@@ -13,7 +13,7 @@ PM> Install-Package QcloudSharp
 ```csharp
 using QcloudSharp;
 using Newtonsoft.Json;
-using Enum = QcloudSharp.Enum;
+using QcloudSharp.Enums;
 
 dynamic client = new QcloudClient
 {
@@ -21,7 +21,7 @@ dynamic client = new QcloudClient
     SecretKey = "Your_Secret_Key"
 };
 
-var resultString = client.DescribeUserInfo(Enum.Endpoint.Trade, Enum.Endpoint.Region.CAN);
+var resultString = client.DescribeUserInfo(Enums.Endpoint.Trade, Enums.Endpoint.Region.CAN);
 // e.g. {"code":0,"message": "","userInfo":{"name":"compName","isOwner":1,"mailStatus":1,"mail":"112233@qq.com","phone":"13811112222"}}
 
 dynamic result = JsonConvert.DeserializeObject<ApiResult>(resultString);
@@ -42,7 +42,7 @@ Or you can have a look at [QcloudCvmHelper](https://github.com/kinosang/QcloudCv
 
 ### Enums
 
-All Enums are provided in class `QcloudSharp.Enum`.
+All Enums are provided in class `QcloudSharp.Enums`.
 
 ```csharp
 public enum Endpoint // Abbreviation for endpoint domain
@@ -51,28 +51,40 @@ public enum Endpoint // Abbreviation for endpoint domain
 Members
 * Account
 * Bill
+* Bm
 * Cbs
 * Cdb
 * Cdn
 * Cmem
+* CmqQueue
+* CmqTopic
+* Cns
 * Csec
 * Cvm
 * Dayu
+* Dfw
 * Eip
 * Image
+* Iot
+* Kms
 * Lb
 * Live
 * Market
+* Mongodb
 * Monitor
+* Partners
 * Redis
 * Scaling
 * Snapshot
 * Sqlserver
 * Tdsql
+* Tmt
 * Trade
 * Vod
+* Vod2
 * Vpc
 * Wenzhi
+* Wss
 * Yunsou
 
 ```csharp
@@ -80,11 +92,16 @@ public enum Region // IATA code for Region city
 ```
 
 Members
-* BJS
-* CAN
-* SHA
-* HKG
-* YTO
+* BJS `bj`
+* CAN `gz`
+* HKG `hk`
+* SHA `sh`
+* SIN `sg`
+* SJC `usw`
+* YTO `ca`
+* CAN1 `gzopen`
+* SHA2 `shjr`
+* SZX2 `szjr`
 
 ### Classes
 
@@ -101,21 +118,21 @@ Constructors
 Properties
 * string `SecretId`
 * string `SecretKey`
-* Enum.Region `Region`
-* Enum.Endpoint `Endpoint`
+* Enums.Region `Region`
+* Enums.Endpoint `Endpoint`
 
 Methods
 * `void AddParameter(KeyValuePair<string, string>)`
 * `void AddParameter(IEnumerable<KeyValuePair<string, string>>)`
 * `void ClearParameter()`
-* `Submit(Enum.Endpoint, Enum.Region, string)`
-* `Submit(Enum.Endpoint, string)`
+* `Submit(Enums.Endpoint, EnumsRegion, string)`
+* `Submit(Enums.Endpoint, string)`
 * `Submit(string)`
 
 Dynamic Methods
-* `{Action}(Enum.Endpoint, Enum.Region)`
-* `{Action}(Enum.Endpoint, Enum.Region, IEnumerable<KeyValuePair<string, string>>)`
-* `{Action}(Enum.Endpoint endpoint, Enum.Region region, KeyValuePair<string, string>, ...)`
+* `{Action}(Enums.Endpoint, Enums.Region)`
+* `{Action}(Enums.Endpoint, Enums.Region, IEnumerable<KeyValuePair<string, string>>)`
+* `{Action}(Enums.Endpoint endpoint, Enums.Region region, KeyValuePair<string, string>, ...)`
 
 #### ApiResult
 

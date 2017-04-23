@@ -42,7 +42,7 @@ Or you can have a look at [QcloudCvmHelper](https://github.com/kinosang/QcloudCv
 
 ### Enums
 
-All Enums are provided in class `QcloudSharp.Enums`.
+All Enums are provided by class `QcloudSharp.Enums`.
 
 ```csharp
 public enum Endpoint // Abbreviation for endpoint domain

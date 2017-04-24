@@ -1,7 +1,7 @@
 QcloudSharp: Unoffical Qcloud.com API wrapper for .Net
 ===
-[![Build status](https://ci.appveyor.com/api/projects/status/my3yu20j7635osdj?svg=true)](https://ci.appveyor.com/project/7IN0SAN9/qcloudsharp)
-[![NuGet version](https://badge.fury.io/nu/QcloudSharp.svg)](https://www.nuget.org/packages/QcloudSharp)
+[![AppVeyor](https://img.shields.io/appveyor/ci/7IN0SAN9/qcloudsharp.svg)](https://ci.appveyor.com/project/7IN0SAN9/qcloudsharp)
+[![NuGet](https://img.shields.io/nuget/v/QcloudSharp.svg)](https://www.nuget.org/packages/QcloudSharp)
 
 ### Installation
 To install QcloudSharp, run the following command in the Package Manager Console

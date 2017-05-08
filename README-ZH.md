@@ -30,7 +30,7 @@ try
 {
     Console.WriteLine(result.Code);
     Console.WriteLine(result.userInfo.name);
-    Console.WriteLine(result.notExist); // Will throw an ArgumentNullException
+    Console.WriteLine(result.notExist); // 将抛出 ArgumentNullException 异常
 }
 catch(Exception ex)
 {
@@ -42,7 +42,7 @@ catch(Exception ex)
 
 ### 枚举
 
-所有枚举值由 `QcloudSharp.Enums` 类提供.
+所有枚举由 `QcloudSharp.Enums` 类提供.
 
 ```csharp
 public enum Endpoint // API 端点

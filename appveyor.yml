@@ -20,7 +20,7 @@ build:
   include_nuget_references: true
   verbosity: normal
 artifacts:
-- path: bin\Release\QcloudSharp.dll
+- path: src\bin\Release\QcloudSharp.dll
   name: QcloudSharp
 deploy:
 - provider: NuGet

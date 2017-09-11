@@ -3,7 +3,7 @@ skip_branch_with_pr: true
 image: Visual Studio 2017
 dotnet_csproj:
   patch: true
-  file: 'src\QcloudSharp.csproj'
+  file: '**\*.csproj'
   version: '{version}'
   package_version: '{version}'
 install:
@@ -19,22 +19,23 @@ build:
   publish_nuget_symbols: true
   include_nuget_references: true
   verbosity: normal
+after_build:
+  - 7z a QcloudSharp.zip %APPVEYOR_BUILD_FOLDER%\src\bin\Release\*
 artifacts:
-- path: src\bin\Release\QcloudSharp.dll
-  name: QcloudSharp
+  - path: QcloudSharp.zip
 deploy:
-- provider: NuGet
-  api_key:
-    secure: 7sixps51LfcM9cv9+MuwotnND91/5pdnywrJpZ588wrEmPbxvICFUwAOaUqcnYkM
-  on:
-    appveyor_repo_tag: true
-- provider: GitHub
-  description: AppVeyor CI deployment
-  auth_token:
-    secure: 49h1/SXggw6sDLDix121vnZO1XeUqNJkKUDEwx+QdHQJzEJwO2bgRqOs6HPNDExh
-  artifact: QcloudSharp
-  draft: false
-  prerelease: false
-  force_update: true
-  on:
-    appveyor_repo_tag: true
+  - provider: NuGet
+    api_key:
+      secure: 7sixps51LfcM9cv9+MuwotnND91/5pdnywrJpZ588wrEmPbxvICFUwAOaUqcnYkM
+    on:
+      appveyor_repo_tag: true
+  - provider: GitHub
+    description: AppVeyor CI deployment
+    auth_token:
+      secure: 49h1/SXggw6sDLDix121vnZO1XeUqNJkKUDEwx+QdHQJzEJwO2bgRqOs6HPNDExh
+    artifact: QcloudSharp
+    draft: false
+    prerelease: false
+    force_update: true
+    on:
+      appveyor_repo_tag: true

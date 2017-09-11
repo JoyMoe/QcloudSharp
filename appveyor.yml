@@ -6,6 +6,8 @@ dotnet_csproj:
   file: 'src\QcloudSharp.csproj'
   version: '{version}'
   package_version: '{version}'
+install:
+  - nuget restore
 nuget:
   account_feed: true
   project_feed: true

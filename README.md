@@ -15,15 +15,16 @@ PM> Install-Package QcloudSharp
 ```csharp
 using QcloudSharp;
 using Newtonsoft.Json;
-using QcloudSharp.Enums;
 
 dynamic client = new QcloudClient
 {
     SecretId = "Your_Secret_Id",
-    SecretKey = "Your_Secret_Key"
+    SecretKey = "Your_Secret_Key",
+    Endpoint = Constants.Endpoint.Trade,
+    Region = Constants.Region.CAN,
 };
 
-var resultString = client.DescribeUserInfo(Enums.Endpoint.Trade, Enums.Endpoint.Region.CAN);
+var resultString = client.DescribeUserInfo();
 // e.g. {"code":0,"message": "","userInfo":{"name":"compName","isOwner":1,"mailStatus":1,"mail":"112233@qq.com","phone":"13811112222"}}
 
 dynamic result = JsonConvert.DeserializeObject<ApiResult>(resultString);
@@ -32,7 +33,7 @@ try
 {
     Console.WriteLine(result.Code);
     Console.WriteLine(result.userInfo.name);
-    Console.WriteLine(result.notExist); // Will throw an ArgumentNullException
+    Console.WriteLine(result.notExist);
 }
 catch(Exception ex)
 {
@@ -42,12 +43,12 @@ catch(Exception ex)
 
 Or you can have a look at [QcloudCvmHelper](https://github.com/kinosang/QcloudCvmHelper)
 
-### Enums
+### Constants
 
-All Enums are provided by class `QcloudSharp.Enums`.
+All Constants are provided by class `QcloudSharp.Constants`.
 
 ```csharp
-public enum Endpoint // Abbreviation for endpoint domain
+public static class Endpoint // Abbreviation for endpoint domain
 ```
 
 Members
@@ -90,7 +91,7 @@ Members
 * Yunsou
 
 ```csharp
-public enum Region // IATA code for Region city
+public static class Region // IATA code for Region city
 ```
 
 Members
@@ -120,21 +121,20 @@ Constructors
 Properties
 * string `SecretId`
 * string `SecretKey`
-* Enums.Region `Region`
-* Enums.Endpoint `Endpoint`
+* string `Region`
+* string `Endpoint`
 
 Methods
 * `void AddParameter(KeyValuePair<string, string>)`
 * `void AddParameter(IEnumerable<KeyValuePair<string, string>>)`
 * `void ClearParameter()`
-* `Submit(Enums.Endpoint, EnumsRegion, string)`
-* `Submit(Enums.Endpoint, string)`
+* `Submit(string, string, string)`
+* `Submit(string, string)`
 * `Submit(string)`
 
 Dynamic Methods
-* `{Action}(Enums.Endpoint, Enums.Region)`
-* `{Action}(Enums.Endpoint, Enums.Region, IEnumerable<KeyValuePair<string, string>>)`
-* `{Action}(Enums.Endpoint, Enums.Region, KeyValuePair<string, string>, ...)`
+* `{Action}([string][, string][, IEnumerable<KeyValuePair<string, string>>])`
+* `{Action}([string][, string][, KeyValuePair<string, string> ...])`
 
 #### ApiResult
 

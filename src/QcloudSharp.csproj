@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Unofficial API wrapper of Qcloud.com for .Net
+腾讯云 API 的非官方 .Net 封装</Description>
+    <TargetFrameworks>netstandard2.0;netstandard1.3;net462;net451</TargetFrameworks>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageTags>qcloud;腾讯云</PackageTags>
+    <PackOnBuild>true</PackOnBuild>
+    <Authors>Chino Chang &lt;chino@joymoe.com&gt;</Authors>
+    <PackageId>QcloudSharp</PackageId>
+    <PackageProjectUrl>https://github.com/JoyMoe/QcloudSharp</PackageProjectUrl>
+    <Title>QcloudSharp</Title>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='net462'">
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+
+</Project>

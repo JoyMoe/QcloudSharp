@@ -1,14 +1,10 @@
-version: 0.9.{build}
+version: 1.0.{build}
 configuration: Release
-assembly_info:
+dotnet_csproj:
   patch: true
-  file: '**\AssemblyInfo.*'
-  assembly_version: '{version}'
-  assembly_file_version: '{version}'
-  assembly_informational_version: '{version}'
-nuget:
-  account_feed: true
-  project_feed: true
+  file: 'src\QcloudSharp.csproj'
+  version: '{version}'
+  package_version: '{version}'
 build:
   publish_nuget: true
   verbosity: detailed

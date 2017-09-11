@@ -4,24 +4,52 @@ using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace QcloudSharp
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class QcloudClient : DynamicObject
     {
         private const string Uri = "/v2/index.php";
         private List<KeyValuePair<string, string>> _patameters;
 
+        /// <summary>
+        /// Gets or sets the SecretId.
+        /// </summary>
         public string SecretId { get; set; }
-        public string SecretKey { get; set; }
-        public Enums.Region Region { get; set; }
-        public Enums.Endpoint Endpoint { get; set; }
 
+        /// <summary>
+        /// Gets or sets the SecretKey.
+        /// </summary>
+        public string SecretKey { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Region.
+        /// </summary>
+        public string Region { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Endpoint.
+        /// </summary>
+        public string Endpoint { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="QcloudClient"/> class.
+        /// </summary>
         public QcloudClient()
         {
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="QcloudClient"/> class.
+        /// </summary>
+        /// <param name="secretId">The SecretId.</param>
+        /// <param name="secretKey">The SecretKey.</param>
         public QcloudClient(string secretId, string secretKey)
         {
             SecretId = secretId;
@@ -51,7 +79,7 @@ namespace QcloudSharp
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
             data.Add(new KeyValuePair<string, string>("Signature", GetSignature(endpoint, data)));
-            
+
             using (var content = new FormUrlEncodedContent(data))
             {
                 using (var client = new HttpClient())
@@ -68,28 +96,69 @@ namespace QcloudSharp
             return unixTimeStampInTicks / TimeSpan.TicksPerSecond;
         }
 
+        /// <summary>
+        /// Add a parameter to the request.
+        /// </summary>
+        /// <param name="parameter">The <see cref="KeyValuePair{TKey, TValue}" />.</param>
         public void AddParameter(KeyValuePair<string, string> parameter)
         {
             if (_patameters == null) _patameters = new List<KeyValuePair<string, string>>();
             _patameters.Add(parameter);
         }
+
+        /// <summary>
+        /// Add parameters to the request.
+        /// </summary>
+        /// <param name="parameters">The <see cref="IEnumerable{T}" /> of <see cref="KeyValuePair{TKey, TValue}" />.</param>
         public void AddParameter(IEnumerable<KeyValuePair<string, string>> parameters)
         {
             if (parameters == null) throw new ArgumentNullException(nameof(parameters));
             if (_patameters == null) _patameters = new List<KeyValuePair<string, string>>();
             _patameters.AddRange(parameters.ToList());
         }
+
+        /// <summary>
+        /// Remove all parameters from the request.
+        /// </summary>
         public void ClearParameter()
         {
             _patameters = new List<KeyValuePair<string, string>>();
         }
 
-        public string Submit(Enums.Endpoint endpoint, Enums.Region region, string action)
+        /// <summary>
+        /// Submit the request.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        /// <return>The result.</return>
+        public string Submit(string action)
+        {
+            return Submit(Endpoint, Region, action);
+        }
+
+        /// <summary>
+        /// Submit the request.
+        /// </summary>
+        /// <param name="endpoint">The Endpoint, <see cref="Constants.Endpoint" />.</param>
+        /// <param name="action">The action.</param>
+        /// <return>The result.</return>
+        public string Submit(string endpoint, string action)
+        {
+            return Submit(endpoint, Region, action);
+        }
+
+        /// <summary>
+        /// Submit the request.
+        /// </summary>
+        /// <param name="endpoint">The Endpoint, <see cref="Constants.Endpoint" />.</param>
+        /// <param name="region">The Region, <see cref="Constants.Region" />.</param>
+        /// <param name="action">The action.</param>
+        /// <return>The result.</return>
+        public string Submit(string endpoint, string region, string action)
         {
             var patameters = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("Action", action),
-                new KeyValuePair<string, string>("Region", region.ToDescription()),
+                new KeyValuePair<string, string>("Region", region),
                 new KeyValuePair<string, string>("Timestamp", ToUnixTimeSeconds(DateTimeOffset.Now).ToString()),
                 new KeyValuePair<string, string>("Nonce", new Random().Next().ToString()),
                 new KeyValuePair<string, string>("SecretId", SecretId)
@@ -97,57 +166,66 @@ namespace QcloudSharp
 
             if (_patameters != null) patameters.AddRange(_patameters);
 
-            string endpointUrl = String.Format(endpoint.ToDescription(), region.ToDescription());
+            string endpointUrl = String.Format(endpoint, region);
 
             return Send(endpointUrl, patameters);
-        }
-        public string Submit(Enums.Endpoint endpoint, string action)
-        {
-            return Submit(endpoint, Region, action);
-        }
-        public string Submit(string action)
-        {
-            return Submit(Endpoint, Region, action);
         }
 
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
         {
-            if (args.Length < 2)
-                throw new ArgumentException("Endpoint and Region must be specified.");
+            ClearParameter();
 
-            if (!(args[0] is Enums.Endpoint))
-                throw new ArgumentNullException("Endpoint");
+            var argsStack = new Stack<object>(args.Reverse());
 
-            Endpoint = (Enums.Endpoint)args[0];
-
-            if (!(args[1] is Enums.Region))
-                throw new ArgumentNullException("Region");
-            
-            Region = (Enums.Region)args[1];
-
-            if (args.Length >= 3)
+            if (argsStack.Count >= 1)
             {
-                ClearParameter();
+                var endpoints = typeof(Constants.Endpoint).GetFields(BindingFlags.Public | BindingFlags.Static).
+                                                Select(x => x.GetRawConstantValue().ToString());
 
-                if (args[2] is IEnumerable<KeyValuePair<string, string>>)
+                if (argsStack.First() is string && endpoints.Contains(argsStack.First()))
                 {
-                    AddParameter((IEnumerable<KeyValuePair<string, string>>)args[2]);
+                    Endpoint = (string)argsStack.Pop();
+                }
+            }
+
+            if (argsStack.Count >= 1)
+            {
+                var regions = typeof(Constants.Region).GetFields(BindingFlags.Public | BindingFlags.Static).
+                                                          Select(x => x.GetRawConstantValue().ToString());
+
+                if (argsStack.First() is string && regions.Contains(argsStack.First()))
+                {
+                    Region = (string)argsStack.Pop();
+                }
+            }
+
+            if (argsStack.Count >= 1)
+            {
+                if (argsStack.First() is IEnumerable<KeyValuePair<string, string>>)
+                {
+                    AddParameter((IEnumerable<KeyValuePair<string, string>>)argsStack.Pop());
                 }
                 else
                 {
-                    args = args.Skip(2).ToArray();
-                    foreach (var arg in args)
+                    while(argsStack.Count > 0)
                     {
+                        var arg = argsStack.Pop();
+
                         if (!(arg is KeyValuePair<string, string>))
-                            throw new ArgumentException("Parameters required to be KeyValuePair<string, string>");
+                            continue;
 
                         AddParameter((KeyValuePair<string, string>)arg);
                     }
                 }
-                
             }
 
-            result = Submit(Endpoint, Region, binder.Name);
+            if (string.IsNullOrEmpty(Endpoint))
+                    throw new ArgumentNullException(nameof(Endpoint));
+
+            if (string.IsNullOrEmpty(Region))
+                throw new ArgumentNullException(nameof(Region));
+
+            result = Submit(binder.Name);
 
             return true;
         }

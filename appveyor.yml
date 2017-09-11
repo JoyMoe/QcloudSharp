@@ -23,6 +23,7 @@ after_build:
   - 7z a QcloudSharp.zip %APPVEYOR_BUILD_FOLDER%\src\bin\Release\*
 artifacts:
   - path: QcloudSharp.zip
+    name: QcloudSharp
 deploy:
   - provider: NuGet
     api_key:

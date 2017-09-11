@@ -20,8 +20,8 @@ dynamic client = new QcloudClient
 {
     SecretId = "Your_Secret_Id",
     SecretKey = "Your_Secret_Key",
-    Endpoint = Constants.Endpoint.Trade,
-    Region = Constants.Region.CAN,
+    Endpoint = Constants.Endpoint.Trade, // Endpoint can be used as the first argument of Dynamic Methods
+    Region = Constants.Region.CAN, // Region can be used as the first or second argument of Dynamic Methods
 };
 
 var resultString = client.DescribeUserInfo();
@@ -41,7 +41,7 @@ catch(Exception ex)
 }
 ```
 
-Or you can have a look at [QcloudCvmHelper](https://github.com/kinosang/QcloudCvmHelper)
+Or you can have a look at [sample](sample).
 
 ### Constants
 

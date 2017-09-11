@@ -18,8 +18,8 @@ dynamic client = new QcloudClient
 {
     SecretId = "Your_Secret_Id",
     SecretKey = "Your_Secret_Key",
-    Endpoint = Constants.Endpoint.Trade,
-    Region = Constants.Region.CAN,
+    Endpoint = Constants.Endpoint.Trade, // Endpoint 可被作为 Dynamic Methods 的第一个参数
+    Region = Constants.Region.CAN, // Region 可被作为 Dynamic Methods 的第一个或第二个参数
 };
 
 var resultString = client.DescribeUserInfo();
@@ -39,7 +39,7 @@ catch(Exception ex)
 }
 ```
 
-更多细节可查看 [QcloudCvmHelper](https://github.com/kinosang/QcloudCvmHelper) 项目.
+更多细节可查看 [sample](sample) 项目.
 
 ### 常数
 

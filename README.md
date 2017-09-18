@@ -1,7 +1,11 @@
 QcloudSharp: Unoffical Qcloud.com API wrapper for .Net
 ===
+
 [![AppVeyor](https://img.shields.io/appveyor/ci/7IN0SAN9/qcloudsharp.svg)](https://ci.appveyor.com/project/7IN0SAN9/qcloudsharp)
 [![NuGet](https://img.shields.io/nuget/v/QcloudSharp.svg)](https://www.nuget.org/packages/QcloudSharp)
+![net462](https://img.shields.io/badge/.Net-4.6.2-brightgreen.svg)
+![netstandard1.5](https://img.shields.io/badge/.Net-netstandard1.5-brightgreen.svg)
+![netstandard2.0](https://img.shields.io/badge/.Net-netstandard2.0-brightgreen.svg)
 
 [中文说明](README.zh.md)
 

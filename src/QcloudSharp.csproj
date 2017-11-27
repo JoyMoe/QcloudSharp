@@ -9,7 +9,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>qcloud;腾讯云</PackageTags>
     <PackOnBuild>true</PackOnBuild>
-    <Authors>Chino Chang &lt;chino@joymoe.com&gt;</Authors>
+    <Authors>Chino Chang</Authors>
     <PackageId>QcloudSharp</PackageId>
     <PackageVersion>1.0.0</PackageVersion>
     <PackageProjectUrl>https://github.com/JoyMoe/QcloudSharp</PackageProjectUrl>

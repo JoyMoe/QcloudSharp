@@ -1,5 +1,4 @@
-QcloudSharp: Unoffical Qcloud.com API wrapper for .Net
-===
+# QcloudSharp: Unoffical Qcloud.com API wrapper for .Net
 
 [![AppVeyor](https://img.shields.io/appveyor/ci/JoyMoe/qcloudsharp.svg)](https://ci.appveyor.com/project/JoyMoe/qcloudsharp)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/JoyMoe/QcloudSmsSharp/master/LICENSE)
@@ -12,13 +11,16 @@ QcloudSharp: Unoffical Qcloud.com API wrapper for .Net
 
 [中文说明](README.zh.md)
 
-### Installation
+## Installation
+
 To install QcloudSharp, run the following command in the Package Manager Console
+
 ```powershell
 PM> Install-Package QcloudSharp
 ```
 
-### Example
+## Example
+
 ```csharp
 using QcloudSharp;
 using Newtonsoft.Json;
@@ -50,7 +52,7 @@ catch(Exception ex)
 
 Or you can have a look at [sample](sample).
 
-### Constants
+## Constants
 
 All Constants are provided by class `QcloudSharp.Constants`.
 
@@ -59,9 +61,15 @@ public static class Endpoint // Abbreviation for endpoint domain
 ```
 
 Members
+
 * Account
+* Batch
+* Bgpip
 * Bill
 * Bm
+* Bmeip
+* Bmlb
+* Bmvpc
 * Cbs
 * Cdb
 * Cdn
@@ -102,36 +110,44 @@ public static class Region // IATA code for Region city
 ```
 
 Members
+
 * BJS `bj`
 * CAN `gz`
+* CAN1 `gzopen`
+* CKG `cq`
+* CTU `cd`
+* FRA `de`
 * HKG `hk`
+* SEL `kr`
 * SHA `sh`
+* SHA2 `shjr`
 * SIN `sg`
 * SJC `usw`
-* YTO `ca`
-* CAN1 `gzopen`
-* SHA2 `shjr`
 * SZX2 `szjr`
+* YTO `ca`
 
-### Classes
+## Classes
 
-#### QcloudClient
+### QcloudClient
 
 ```csharp
 public class QcloudClient : DynamicObject
 ```
 
 Constructors
+
 * `QcloudClient()`
 * `QcloudClient(SecretId, SecretKey)`
 
 Properties
+
 * string `SecretId`
 * string `SecretKey`
 * string `Region`
 * string `Endpoint`
 
 Methods
+
 * `void AddParameter(KeyValuePair<string, string>)`
 * `void AddParameter(IEnumerable<KeyValuePair<string, string>>)`
 * `void ClearParameter()`
@@ -140,23 +156,27 @@ Methods
 * `Submit(string)`
 
 Dynamic Methods
+
 * `{Action}([string][, string][, IEnumerable<KeyValuePair<string, string>>])`
 * `{Action}([string][, string][, KeyValuePair<string, string> ...])`
 
-#### ApiResult
+### ApiResult
 
 ```csharp
 public class ApiResult : DynamicObject
 ```
 
 Constructors
+
 * `ApiResult()`
 
 Properties
+
 * int `Code`
 * string `Message`
 
 Dynamic Properties
+
 * object Any { Get; Set; }
 
 ## License

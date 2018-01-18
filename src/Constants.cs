@@ -2,11 +2,19 @@
 {
     public static class Constants
     {
+        /// <summary>
+        /// API Endpoints.
+        /// </summary>
         public static class Endpoint
         {
             public const string Account = "account.api.qcloud.com";
+            public const string Batch = "batch.api.qcloud.com";
+            public const string Bgpip = "bgpip.api.qcloud.com";
             public const string Bill = "bill.api.qcloud.com";
             public const string Bm = "bm.api.qcloud.com";
+            public const string Bmeip = "bmeip.api.qcloud.com";
+            public const string Bmlb = "bmlb.api.qcloud.com";
+            public const string Bmvpc = "bmvpc.api.qcloud.com";
             public const string Cbs = "cbs.api.qcloud.com";
             public const string Cdb = "cdb.api.qcloud.com";
             public const string Cdn = "cdn.api.qcloud.com";
@@ -42,18 +50,26 @@
             public const string Wss = "wss.api.qcloud.com";
             public const string Yunsou = "yunsou.api.qcloud.com";
         }
-        public static class Region // Defined as IATA code
+
+        /// <summary>
+        /// Regions, IATA city code.
+        /// </summary>
+        public static class Region
         {
             public const string BJS = "bj";
             public const string CAN = "gz";
+            public const string CAN1 = "gzopen";
+            public const string CKG = "cq";
+            public const string CTU = "cd";
+            public const string FRA = "de";
             public const string HKG = "hk";
+            public const string SEL = "kr";
             public const string SHA = "sh";
+            public const string SHA2 = "shjr";
             public const string SIN = "sg";
             public const string SJC = "usw";
-            public const string YTO = "ca";
-            public const string CAN1 = "gzopen";
-            public const string SHA2 = "shjr";
             public const string SZX2 = "szjr";
+            public const string YTO = "ca";
         }
     }
 }

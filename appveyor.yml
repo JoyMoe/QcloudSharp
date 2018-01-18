@@ -1,4 +1,4 @@
-version: 1.1.0
+version: 1.1.1
 init:
   - if %APPVEYOR_REPO_TAG%==false (appveyor UpdateBuild -Version "%APPVEYOR_BUILD_VERSION%-build%APPVEYOR_BUILD_NUMBER%")
 skip_branch_with_pr: true

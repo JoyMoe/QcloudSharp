@@ -1,14 +1,19 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
+    
     <TargetFramework>netcoreapp3.0</TargetFramework>
+
     <IsPackable>false</IsPackable>
   </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\..\src\QcloudSharp\QcloudSharp.csproj" />
   </ItemGroup>
+
 </Project>

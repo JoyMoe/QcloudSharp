@@ -1,4 +1,4 @@
-﻿namespace QcloudSharp
+namespace QcloudSharp
 {
     public static class Constants
     {

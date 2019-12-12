@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace QcloudSharp
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class QcloudClient : DynamicObject
     {
@@ -60,7 +60,7 @@ namespace QcloudSharp
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
             data.Sort(CompareKeyValuePair);
-
+            
             using var content = new FormUrlEncodedContent(data);
 
             var queryString = WebUtility.UrlDecode(await content.ReadAsStringAsync());

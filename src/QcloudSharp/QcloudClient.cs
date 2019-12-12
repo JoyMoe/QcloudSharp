@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace QcloudSharp
 {
@@ -60,31 +61,31 @@ namespace QcloudSharp
         {
             return string.Compare(a.Key, b.Key, StringComparison.Ordinal);
         }
-        private string GetSignature(string endpoint, List<KeyValuePair<string, string>> data)
+        private async Task<string> GetSignatureAsync(string endpoint, List<KeyValuePair<string, string>> data)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
             data.Sort(CompareKeyValuePair);
 
             using var content = new FormUrlEncodedContent(data);
 
-            var queryString = WebUtility.UrlDecode(content.ReadAsStringAsync().Result);
+            var queryString = WebUtility.UrlDecode(await content.ReadAsStringAsync());
             var plainString = $"GET{endpoint}{Uri}?{queryString}";
 
             using var hmac = new HMACSHA1(Encoding.UTF8.GetBytes(SecretKey));
 
             return Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(plainString)));
         }
-        private string Send(string endpoint, List<KeyValuePair<string, string>> data)
+        private async Task<string> SendAsync(string endpoint, List<KeyValuePair<string, string>> data)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
-            data.Add(new KeyValuePair<string, string>("Signature", GetSignature(endpoint, data)));
+            data.Add(new KeyValuePair<string, string>("Signature", await GetSignatureAsync(endpoint, data)));
 
             using var content = new FormUrlEncodedContent(data);
             using var client = new HttpClient();
 
-            var message = client.GetAsync($"https://{endpoint}{Uri}?{content.ReadAsStringAsync().Result}").Result;
+            var message = await client.GetAsync($"https://{endpoint}{Uri}?{await content.ReadAsStringAsync()}");
 
-            return message.Content.ReadAsStringAsync().Result;
+            return await message.Content.ReadAsStringAsync();
         }
 
         /// <summary>
@@ -123,7 +124,7 @@ namespace QcloudSharp
         /// <return>The result.</return>
         public string Submit(string action)
         {
-            return Submit(Endpoint, Region, action);
+            return SubmitAsync(action).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -134,7 +135,7 @@ namespace QcloudSharp
         /// <return>The result.</return>
         public string Submit(string endpoint, string action)
         {
-            return Submit(endpoint, Region, action);
+            return SubmitAsync(endpoint, action).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -145,6 +146,39 @@ namespace QcloudSharp
         /// <param name="action">The action.</param>
         /// <return>The result.</return>
         public string Submit(string endpoint, string region, string action)
+        {
+            return SubmitAsync(endpoint, region, action).GetAwaiter().GetResult();
+        }
+
+        /// <summary>
+        /// Submit the request.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        /// <return>The result.</return>
+        public async Task<string> SubmitAsync(string action)
+        {
+            return await SubmitAsync(Endpoint, Region, action);
+        }
+
+        /// <summary>
+        /// Submit the request.
+        /// </summary>
+        /// <param name="endpoint">The Endpoint, <see cref="Constants.Endpoint" />.</param>
+        /// <param name="action">The action.</param>
+        /// <return>The result.</return>
+        public async Task<string> SubmitAsync(string endpoint, string action)
+        {
+            return await SubmitAsync(endpoint, Region, action);
+        }
+
+        /// <summary>
+        /// Submit the request.
+        /// </summary>
+        /// <param name="endpoint">The Endpoint, <see cref="Constants.Endpoint" />.</param>
+        /// <param name="region">The Region, <see cref="Constants.Region" />.</param>
+        /// <param name="action">The action.</param>
+        /// <return>The result.</return>
+        public async Task<string> SubmitAsync(string endpoint, string region, string action)
         {
             var patameters = new List<KeyValuePair<string, string>>
             {
@@ -159,7 +193,7 @@ namespace QcloudSharp
 
             string endpointUrl = String.Format(endpoint, region);
 
-            return Send(endpointUrl, patameters);
+            return await SendAsync(endpointUrl, patameters);
         }
 
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)

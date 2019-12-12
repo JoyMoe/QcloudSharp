@@ -2,7 +2,7 @@
 using QcloudSharp;
 using Newtonsoft.Json;
 
-namespace sample
+namespace ConsoleApp
 {
     class Program
     {

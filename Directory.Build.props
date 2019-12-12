@@ -1,0 +1,26 @@
+<Project>
+  <!-- Package configuration -->
+  <PropertyGroup>
+    <Company>JoyMoe Interactive Entertainment Limited</Company>
+    <Copyright>Copyright 2018 - 2019 © JoyMoe Interactive Entertainment Limited</Copyright>
+
+    <Version>0.1.0</Version>
+    <PackageVersion>0.1.0</PackageVersion>
+
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>git://github.com/JoyMoe/QcloudSharp</RepositoryUrl>
+
+    <PackageLicense>LICENSE</PackageLicense>
+    <PackageProjectUrl>https://github.com/JoyMoe/QcloudSharp</PackageProjectUrl>
+    <PackageIcon>qcloud.png</PackageIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)qcloud.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <LangVersion>8.0</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+</Project>

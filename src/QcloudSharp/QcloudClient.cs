@@ -64,30 +64,27 @@ namespace QcloudSharp
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
             data.Sort(CompareKeyValuePair);
-            using (var content = new FormUrlEncodedContent(data))
-            {
-                var queryString = WebUtility.UrlDecode(content.ReadAsStringAsync().Result);
-                var plainString = $"GET{endpoint}{Uri}?{queryString}";
 
-                using (var hmac = new HMACSHA1(Encoding.UTF8.GetBytes(SecretKey)))
-                {
-                    return Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(plainString)));
-                }
-            }
+            using var content = new FormUrlEncodedContent(data);
+
+            var queryString = WebUtility.UrlDecode(content.ReadAsStringAsync().Result);
+            var plainString = $"GET{endpoint}{Uri}?{queryString}";
+
+            using var hmac = new HMACSHA1(Encoding.UTF8.GetBytes(SecretKey));
+
+            return Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(plainString)));
         }
         private string Send(string endpoint, List<KeyValuePair<string, string>> data)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
             data.Add(new KeyValuePair<string, string>("Signature", GetSignature(endpoint, data)));
 
-            using (var content = new FormUrlEncodedContent(data))
-            {
-                using (var client = new HttpClient())
-                {
-                    var message = client.GetAsync($"https://{endpoint}{Uri}?{content.ReadAsStringAsync().Result}").Result;
-                    return message.Content.ReadAsStringAsync().Result;
-                }
-            }
+            using var content = new FormUrlEncodedContent(data);
+            using var client = new HttpClient();
+
+            var message = client.GetAsync($"https://{endpoint}{Uri}?{content.ReadAsStringAsync().Result}").Result;
+
+            return message.Content.ReadAsStringAsync().Result;
         }
         private long ToUnixTimeSeconds(DateTimeOffset dateTimeOffset)
         {
@@ -207,12 +204,11 @@ namespace QcloudSharp
                 }
                 else
                 {
-                    while(argsStack.Count > 0)
+                    while (argsStack.Count > 0)
                     {
                         var arg = argsStack.Pop();
 
-                        if (!(arg is KeyValuePair<string, string>))
-                            continue;
+                        if (!(arg is KeyValuePair<string, string>)) continue;
 
                         AddParameter((KeyValuePair<string, string>)arg);
                     }
@@ -220,7 +216,7 @@ namespace QcloudSharp
             }
 
             if (string.IsNullOrEmpty(Endpoint))
-                    throw new ArgumentNullException(nameof(Endpoint));
+                throw new ArgumentNullException(nameof(Endpoint));
 
             if (string.IsNullOrEmpty(Region))
                 throw new ArgumentNullException(nameof(Region));

@@ -18,6 +18,7 @@ namespace QcloudSharp
     {
         private const string Uri = "/v2/index.php";
         private List<KeyValuePair<string, string>> _patameters;
+        private readonly HttpMessageHandler _handler;
 
         /// <summary>
         /// Gets or sets the SecretId.
@@ -42,17 +43,12 @@ namespace QcloudSharp
         /// <summary>
         /// Initializes a new instance of the <see cref="QcloudClient"/> class.
         /// </summary>
-        public QcloudClient()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="QcloudClient"/> class.
-        /// </summary>
         /// <param name="secretId">The SecretId.</param>
         /// <param name="secretKey">The SecretKey.</param>
-        public QcloudClient(string secretId, string secretKey)
+        public QcloudClient(string secretId = null, string secretKey = null, HttpMessageHandler handler = null)
         {
+            _handler = handler;
+
             SecretId = secretId;
             SecretKey = secretKey;
         }
@@ -81,7 +77,8 @@ namespace QcloudSharp
             data.Add(new KeyValuePair<string, string>("Signature", await GetSignatureAsync(endpoint, data)));
 
             using var content = new FormUrlEncodedContent(data);
-            using var client = new HttpClient();
+            
+            var client = new HttpClient(_handler);
 
             var message = await client.GetAsync($"https://{endpoint}{Uri}?{await content.ReadAsStringAsync()}");
 

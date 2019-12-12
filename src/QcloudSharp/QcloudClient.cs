@@ -17,7 +17,6 @@ namespace QcloudSharp
     public class QcloudClient : DynamicObject
     {
         private const string Uri = "/v2/index.php";
-        private List<KeyValuePair<string, string>> _patameters;
         private readonly HttpMessageHandler _handler;
 
         /// <summary>
@@ -86,42 +85,13 @@ namespace QcloudSharp
         }
 
         /// <summary>
-        /// Add a parameter to the request.
-        /// </summary>
-        /// <param name="parameter">The <see cref="KeyValuePair{TKey, TValue}" />.</param>
-        public void AddParameter(KeyValuePair<string, string> parameter)
-        {
-            if (_patameters == null) _patameters = new List<KeyValuePair<string, string>>();
-            _patameters.Add(parameter);
-        }
-
-        /// <summary>
-        /// Add parameters to the request.
-        /// </summary>
-        /// <param name="parameters">The <see cref="IEnumerable{T}" /> of <see cref="KeyValuePair{TKey, TValue}" />.</param>
-        public void AddParameter(IEnumerable<KeyValuePair<string, string>> parameters)
-        {
-            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
-            if (_patameters == null) _patameters = new List<KeyValuePair<string, string>>();
-            _patameters.AddRange(parameters.ToList());
-        }
-
-        /// <summary>
-        /// Remove all parameters from the request.
-        /// </summary>
-        public void ClearParameter()
-        {
-            _patameters = new List<KeyValuePair<string, string>>();
-        }
-
-        /// <summary>
         /// Submit the request.
         /// </summary>
         /// <param name="action">The action.</param>
         /// <return>The result.</return>
-        public string Submit(string action)
+        public string Submit(string action, IEnumerable<KeyValuePair<string, string>> parameters = null)
         {
-            return SubmitAsync(action).GetAwaiter().GetResult();
+            return SubmitAsync(action, parameters).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -130,9 +100,9 @@ namespace QcloudSharp
         /// <param name="endpoint">The Endpoint, <see cref="Constants.Endpoint" />.</param>
         /// <param name="action">The action.</param>
         /// <return>The result.</return>
-        public string Submit(string endpoint, string action)
+        public string Submit(string endpoint, string action, IEnumerable<KeyValuePair<string, string>> parameters = null)
         {
-            return SubmitAsync(endpoint, action).GetAwaiter().GetResult();
+            return SubmitAsync(endpoint, action, parameters).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -141,20 +111,22 @@ namespace QcloudSharp
         /// <param name="endpoint">The Endpoint, <see cref="Constants.Endpoint" />.</param>
         /// <param name="region">The Region, <see cref="Constants.Region" />.</param>
         /// <param name="action">The action.</param>
+        /// <param name="parameters">The parameters.</param>
         /// <return>The result.</return>
-        public string Submit(string endpoint, string region, string action)
+        public string Submit(string endpoint, string region, string action, IEnumerable<KeyValuePair<string, string>> parameters = null)
         {
-            return SubmitAsync(endpoint, region, action).GetAwaiter().GetResult();
+            return SubmitAsync(endpoint, region, action, parameters).GetAwaiter().GetResult();
         }
 
         /// <summary>
         /// Submit the request.
         /// </summary>
         /// <param name="action">The action.</param>
+        /// <param name="parameters">The parameters.</param>
         /// <return>The result.</return>
-        public async Task<string> SubmitAsync(string action)
+        public async Task<string> SubmitAsync(string action, IEnumerable<KeyValuePair<string, string>> parameters = null)
         {
-            return await SubmitAsync(Endpoint, Region, action);
+            return await SubmitAsync(Endpoint, Region, action, parameters);
         }
 
         /// <summary>
@@ -162,10 +134,11 @@ namespace QcloudSharp
         /// </summary>
         /// <param name="endpoint">The Endpoint, <see cref="Constants.Endpoint" />.</param>
         /// <param name="action">The action.</param>
+        /// <param name="parameters">The parameters.</param>
         /// <return>The result.</return>
-        public async Task<string> SubmitAsync(string endpoint, string action)
+        public async Task<string> SubmitAsync(string endpoint, string action, IEnumerable<KeyValuePair<string, string>> parameters = null)
         {
-            return await SubmitAsync(endpoint, Region, action);
+            return await SubmitAsync(endpoint, Region, action, parameters);
         }
 
         /// <summary>
@@ -174,8 +147,9 @@ namespace QcloudSharp
         /// <param name="endpoint">The Endpoint, <see cref="Constants.Endpoint" />.</param>
         /// <param name="region">The Region, <see cref="Constants.Region" />.</param>
         /// <param name="action">The action.</param>
+        /// <param name="parameters">The parameters.</param>
         /// <return>The result.</return>
-        public async Task<string> SubmitAsync(string endpoint, string region, string action)
+        public async Task<string> SubmitAsync(string endpoint, string region, string action, IEnumerable<KeyValuePair<string, string>> parameters = null)
         {
             var patameters = new List<KeyValuePair<string, string>>
             {
@@ -186,7 +160,7 @@ namespace QcloudSharp
                 new KeyValuePair<string, string>("SecretId", SecretId)
             };
 
-            if (_patameters != null) patameters.AddRange(_patameters);
+            if (patameters != null) patameters.AddRange(patameters);
 
             string endpointUrl = String.Format(endpoint, region);
 
@@ -195,48 +169,31 @@ namespace QcloudSharp
 
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
         {
-            ClearParameter();
+            var arguments = args.ToList();
 
-            var argsStack = new Stack<object>(args.Reverse());
-
-            if (argsStack.Count >= 1)
+            if (arguments.Count >= 1)
             {
-                var endpoints = typeof(Constants.Endpoint).GetFields(BindingFlags.Public | BindingFlags.Static).
-                                                Select(x => x.GetRawConstantValue().ToString());
+                var endpoints = typeof(Constants.Endpoint).GetFields(BindingFlags.Public | BindingFlags.Static)
+                    .Select(x => x.GetRawConstantValue().ToString());
 
-                if (argsStack.First() is string && endpoints.Contains(argsStack.First()))
+                if (arguments.First() is string && endpoints.Contains(arguments.First()))
                 {
-                    Endpoint = (string)argsStack.Pop();
+                    Endpoint = (string)arguments.First();
+
+                    arguments.RemoveAt(0);
                 }
             }
 
-            if (argsStack.Count >= 1)
+            if (arguments.Count >= 1)
             {
                 var regions = typeof(Constants.Region).GetFields(BindingFlags.Public | BindingFlags.Static).
                                                           Select(x => x.GetRawConstantValue().ToString());
 
-                if (argsStack.First() is string && regions.Contains(argsStack.First()))
+                if (arguments.First() is string && regions.Contains(arguments.First()))
                 {
-                    Region = (string)argsStack.Pop();
-                }
-            }
+                    Region = (string)arguments.First();
 
-            if (argsStack.Count >= 1)
-            {
-                if (argsStack.First() is IEnumerable<KeyValuePair<string, string>>)
-                {
-                    AddParameter((IEnumerable<KeyValuePair<string, string>>)argsStack.Pop());
-                }
-                else
-                {
-                    while (argsStack.Count > 0)
-                    {
-                        var arg = argsStack.Pop();
-
-                        if (!(arg is KeyValuePair<string, string>)) continue;
-
-                        AddParameter((KeyValuePair<string, string>)arg);
-                    }
+                    arguments.RemoveAt(0);
                 }
             }
 
@@ -246,7 +203,14 @@ namespace QcloudSharp
             if (string.IsNullOrEmpty(Region))
                 throw new ArgumentNullException(nameof(Region));
 
-            result = Submit(binder.Name);
+            if (arguments.First() is IEnumerable<KeyValuePair<string, string>> parameters)
+            {
+                result = Submit(binder.Name, parameters);
+            }
+            else
+            {
+                result = Submit(binder.Name, arguments.OfType<KeyValuePair<string, string>>());
+            }
 
             return true;
         }

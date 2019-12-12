@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Moq;
 using Moq.Protected;
 using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.Net;
 using System.Net.Http;
@@ -58,22 +59,22 @@ namespace QcloudSharp.Tests
                 Region = Constants.Region.CAN,
             };
 
-            var resultString = client.DescribeUserInfo();
+            client.DescribeUserInfo();
 
             mock.Protected().Verify(
                 "SendAsync",
                 Times.Once(), // we expected a single external request
                 ItExpr.Is<HttpRequestMessage>(req =>
-                  req.Method == HttpMethod.Get &&
-                  req.RequestUri.Host == Constants.Endpoint.Trade &&
-                  req.RequestUri.Query.Contains("Action") &&
-                  req.RequestUri.Query.Contains("Region") &&
-                  req.RequestUri.Query.Contains("Timestamp") &&
-                  req.RequestUri.Query.Contains("Nonce") &&
-                  req.RequestUri.Query.Contains("SecretId") &&
-                  req.RequestUri.Query.Contains("Signature")
-               ),
-               ItExpr.IsAny<CancellationToken>()
+                    req.Method == HttpMethod.Get &&
+                    req.RequestUri.Host == Constants.Endpoint.Trade &&
+                    req.RequestUri.Query.Contains("Action") &&
+                    req.RequestUri.Query.Contains("Region") &&
+                    req.RequestUri.Query.Contains("Timestamp") &&
+                    req.RequestUri.Query.Contains("Nonce") &&
+                    req.RequestUri.Query.Contains("SecretId") &&
+                    req.RequestUri.Query.Contains("Signature")
+                ),
+                ItExpr.IsAny<CancellationToken>()
             );
         }
 

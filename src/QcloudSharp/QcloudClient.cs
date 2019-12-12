@@ -56,11 +56,12 @@ namespace QcloudSharp
         {
             return string.Compare(a.Key, b.Key, StringComparison.Ordinal);
         }
+
         private async Task<string> GetSignatureAsync(string endpoint, List<KeyValuePair<string, string>> data)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
             data.Sort(CompareKeyValuePair);
-            
+
             using var content = new FormUrlEncodedContent(data);
 
             var queryString = WebUtility.UrlDecode(await content.ReadAsStringAsync());
@@ -70,13 +71,14 @@ namespace QcloudSharp
 
             return Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(plainString)));
         }
+
         private async Task<string> SendAsync(string endpoint, List<KeyValuePair<string, string>> data)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
             data.Add(new KeyValuePair<string, string>("Signature", await GetSignatureAsync(endpoint, data)));
 
             using var content = new FormUrlEncodedContent(data);
-            
+
             var client = new HttpClient(_handler);
 
             var message = await client.GetAsync($"https://{endpoint}{Uri}?{await content.ReadAsStringAsync()}");
@@ -178,7 +180,7 @@ namespace QcloudSharp
 
                 if (arguments.First() is string && endpoints.Contains(arguments.First()))
                 {
-                    Endpoint = (string)arguments.First();
+                    Endpoint = (string) arguments.First();
 
                     arguments.RemoveAt(0);
                 }
@@ -186,12 +188,12 @@ namespace QcloudSharp
 
             if (arguments.Count >= 1)
             {
-                var regions = typeof(Constants.Region).GetFields(BindingFlags.Public | BindingFlags.Static).
-                                                          Select(x => x.GetRawConstantValue().ToString());
+                var regions = typeof(Constants.Region).GetFields(BindingFlags.Public | BindingFlags.Static)
+                    .Select(x => x.GetRawConstantValue().ToString());
 
                 if (arguments.First() is string && regions.Contains(arguments.First()))
                 {
-                    Region = (string)arguments.First();
+                    Region = (string) arguments.First();
 
                     arguments.RemoveAt(0);
                 }
@@ -203,14 +205,12 @@ namespace QcloudSharp
             if (string.IsNullOrEmpty(Region))
                 throw new ArgumentNullException(nameof(Region));
 
-            if (arguments.First() is IEnumerable<KeyValuePair<string, string>> parameters)
-            {
+            if (!arguments.Any())
+                result = Submit(binder.Name);
+            else if (arguments.First() is IEnumerable<KeyValuePair<string, string>> parameters)
                 result = Submit(binder.Name, parameters);
-            }
             else
-            {
                 result = Submit(binder.Name, arguments.OfType<KeyValuePair<string, string>>());
-            }
 
             return true;
         }

@@ -12,10 +12,7 @@ namespace QcloudSharp
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            if (!_attr.ContainsKey(binder.Name))
-            {
-                throw new MemberAccessException(binder.Name);
-            }
+            if (!_attr.ContainsKey(binder.Name)) throw new MemberAccessException(binder.Name);
 
             result = _attr[binder.Name];
             return true;

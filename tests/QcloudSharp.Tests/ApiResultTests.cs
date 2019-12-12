@@ -18,7 +18,8 @@ namespace QcloudSharp.Tests
         [Fact]
         public void ShouldSetGetProperties()
         {
-            dynamic result = new ApiResult { 
+            dynamic result = new ApiResult
+            {
                 Code = 200,
                 Message = "OK"
             };

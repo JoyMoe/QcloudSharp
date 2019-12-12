@@ -153,7 +153,7 @@ namespace QcloudSharp
         /// <return>The result.</return>
         public async Task<string> SubmitAsync(string endpoint, string region, string action, IEnumerable<KeyValuePair<string, string>> parameters = null)
         {
-            var patameters = new List<KeyValuePair<string, string>>
+            var data = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("Action", action),
                 new KeyValuePair<string, string>("Region", region),
@@ -162,11 +162,11 @@ namespace QcloudSharp
                 new KeyValuePair<string, string>("SecretId", SecretId)
             };
 
-            if (patameters != null) patameters.AddRange(patameters);
+            if (parameters != null) data.AddRange(parameters);
 
-            string endpointUrl = String.Format(endpoint, region);
+            var endpointUrl = string.Format(endpoint, region);
 
-            return await SendAsync(endpointUrl, patameters);
+            return await SendAsync(endpointUrl, data);
         }
 
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)

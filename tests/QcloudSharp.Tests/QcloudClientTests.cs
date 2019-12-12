@@ -63,7 +63,7 @@ namespace QcloudSharp.Tests
 
             mock.Protected().Verify(
                 "SendAsync",
-                Times.Once(), // we expected a single external request
+                Times.Once(),
                 ItExpr.Is<HttpRequestMessage>(req =>
                     req.Method == HttpMethod.Get &&
                     req.RequestUri.Host == Constants.Endpoint.Trade &&
@@ -73,6 +73,70 @@ namespace QcloudSharp.Tests
                     req.RequestUri.Query.Contains("Nonce") &&
                     req.RequestUri.Query.Contains("SecretId") &&
                     req.RequestUri.Query.Contains("Signature")
+                ),
+                ItExpr.IsAny<CancellationToken>()
+            );
+        }
+
+        [Fact]
+        public void ShouldSendCorrectlyRequestWithParameters()
+        {
+            var mock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+
+            mock.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+                .Returns((HttpRequestMessage req, CancellationToken ct) => GetMockResponse(req, ct))
+                .Callback<HttpRequestMessage, CancellationToken>((req, ct) =>
+                {
+                    var query = QueryHelpers.ParseQuery(req.RequestUri.Query);
+                    Assert.Equal("DescribeInstances", query["Action"]);
+                    Assert.Equal(Constants.Region.CAN, query["Region"]);
+                    Assert.Equal(SecretId, query["SecretId"]);
+                    Assert.Equal("20", query["Offset"]);
+                    Assert.Equal("10", query["Limit"]);
+
+                    var plaintext = $"GET{Constants.Endpoint.Trade}/v2/index.php?Action={query["Action"]}&Limit={query["Limit"]}&Nonce={query["Nonce"]}&Offset={query["Offset"]}&Region={query["Region"]}&SecretId={query["SecretId"]}&Timestamp={query["Timestamp"]}";
+
+                    using var hmac = new HMACSHA1(Encoding.UTF8.GetBytes(SecretKey));
+
+                    Assert.Equal(Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(plaintext))), query["Signature"]);
+                })
+                .Verifiable();
+
+            var disposable = mock.As<IDisposable>();
+            disposable.Setup(d => d.Dispose());
+
+            dynamic client = new QcloudClient(SecretId, SecretKey, mock.Object)
+            {
+                Endpoint = Constants.Endpoint.Trade,
+                Region = Constants.Region.CAN,
+            };
+
+            client.DescribeInstances(new[]
+            {
+                new KeyValuePair<string, string>("Offset", "20"),
+                new KeyValuePair<string, string>("Limit", "10")
+            });
+
+            client.DescribeInstances(
+                new KeyValuePair<string, string>("Offset", "20"),
+                new KeyValuePair<string, string>("Limit", "10")
+            );
+
+            mock.Protected().Verify(
+                "SendAsync",
+                Times.Exactly(2),
+                ItExpr.Is<HttpRequestMessage>(req =>
+                    req.Method == HttpMethod.Get &&
+                    req.RequestUri.Host == Constants.Endpoint.Trade &&
+                    req.RequestUri.Query.Contains("Action") &&
+                    req.RequestUri.Query.Contains("Region") &&
+                    req.RequestUri.Query.Contains("Timestamp") &&
+                    req.RequestUri.Query.Contains("Nonce") &&
+                    req.RequestUri.Query.Contains("SecretId") &&
+                    req.RequestUri.Query.Contains("Signature") &&
+                    req.RequestUri.Query.Contains("Offset") &&
+                    req.RequestUri.Query.Contains("Limit")
                 ),
                 ItExpr.IsAny<CancellationToken>()
             );
